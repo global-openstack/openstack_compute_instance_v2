@@ -1,0 +1,16 @@
+#cloud-config
+users:
+  - name: rackadmin
+    gecos: Rack Admin
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: sudo
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHkSxDwLlcYpqwlI/LkXpbHE6pl63UR+LqqZ+PTMnQLB GitLab SSH Pair
+
+runcmd:
+  - mkdir -p /home/rackadmin/.ssh
+  - echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHkSxDwLlcYpqwlI/LkXpbHE6pl63UR+LqqZ+PTMnQLB GitLab SSH Pair" > /home/rackadmin/.ssh/authorized_keys
+  - chown -R rackadmin:rackadmin /home/rackadmin/.ssh
+  - chmod 700 /home/rackadmin/.ssh
+  - chmod 600 /home/rackadmin/.ssh/authorized_keys
