@@ -30,16 +30,7 @@ output "additional_nics_attached" {
 
 output "additional_volumes_attached" {
   description = "Attached volumes per VM with ordering"
-  value = {
-    for k, vol in module.add_volumes.additional_volumes_attached :
-    k => {
-      instance_id = vol.instance_id
-      volume_id   = vol.volume_id
-      size        = vol.size
-      type        = vol.type
-      order       = tonumber(vol.order)
-    }
-  }
+  value       = module.add_volumes.additional_volumes_attached
 }
 
 output "floating_ips" {

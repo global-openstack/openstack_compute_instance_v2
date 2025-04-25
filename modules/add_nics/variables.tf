@@ -1,18 +1,17 @@
 variable "instance_ids" {
-  description = "Map of instance names to their IDs"
-  type        = map(string)
+  type = map(string)
 }
 
-variable "instance_names" {
-  description = "List of instance names, ordered"
-  type        = list(string)
+variable "instance_base_name" {
+  description = "Base name for instances (used to generate NIC names)"
+  type        = string
 }
 
 variable "additional_nics" {
-  description = "List of NIC maps: network_name, subnet_name, and optional static_ip"
+  description = "List of additional NICs (same list applied to all VMs)"
   type = list(object({
     network_name = string
     subnet_name  = string
-    static_ip    = optional(string)
+    static_ip    = string
   }))
 }

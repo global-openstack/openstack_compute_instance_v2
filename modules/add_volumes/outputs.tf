@@ -1,13 +1,11 @@
 output "additional_volumes_attached" {
-  description = "Attached additional volumes with size, type, and order"
   value = {
-    for k in keys(openstack_blockstorage_volume_v3.data_disks) : 
-    k => {
-      instance_id = var.instance_ids[local.volume_defs[k].vm_name]
-      volume_id   = openstack_blockstorage_volume_v3.data_disks[k].id
-      size        = local.volume_defs[k].size
-      type        = local.volume_defs[k].type
-      order       = local.volume_defs[k].order
+    for volume_name, attachment in openstack_compute_volume_attach_v2.attachments : volume_name => {
+      instance_id = attachment.instance_id
+      volume_id   = attachment.volume_id
+      type        = local.ordered_volume_map[volume_name].type
+      size        = local.ordered_volume_map[volume_name].size
+      order       = local.ordered_volume_map[volume_name].order
     }
   }
 }

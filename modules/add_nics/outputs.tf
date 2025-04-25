@@ -1,11 +1,10 @@
 output "additional_nics_ports" {
-  description = "Extra NIC ports created"
   value = {
     for k, p in openstack_networking_port_v2.additional_nic_ports :
     k => {
-      ip  = try(p.all_fixed_ips[0], try(p.fixed_ips[0].ip_address, null))
-      mac = p.mac_address
-      net = p.network_id
+      ip         = p.all_fixed_ips[0]
+      mac        = p.mac_address
+      network_id = p.network_id
     }
   }
 }
