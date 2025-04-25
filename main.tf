@@ -56,7 +56,7 @@ resource "openstack_compute_instance_v2" "vm" {
   key_pair          = var.key_pair
   availability_zone = var.availability_zone
   
-  user_data = file("${path.module}/cloud-init/user_data_mount_volumes.yaml")
+  user_data = var.user_data_file != "" ? file("${path.module}/${var.user_data_file}") : null
 
   # Attach primary NIC via pre-created port
   network {

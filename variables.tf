@@ -59,10 +59,10 @@ variable "static_ips" {
   default     = []
 }
 
-variable "user_data" {
+variable "user_data_file" {
+  description = "Path to the cloud-init user_data file"
   type        = string
-  default     = null
-  description = "Path to cloud-init user_data file"
+  default     = ""
 }
 
 variable "source_type" {
