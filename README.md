@@ -38,10 +38,12 @@ This Terraform module provisions one or more virtual machines into an OpenStack 
 | `user_data`           | Path to cloud-init script file                             | string         | null    | no       |
 | `network_name`        | Name of the primary NIC network                            | string         | n/a     | yes      |
 | `subnet_name`         | Subnet name of the primary NIC                             | string         | n/a     | yes      |
+| `public_network_name`  | Public network name for floating IPs                      | string         | n/a     | yes (if using floating IPs) |
 | `static_ips`          | List of static IPs for primary NIC                         | list(string)   | []      | no       |
-| `floating_network_name` | Public network name for floating IPs                    | string         | n/a     | yes (if using floating IPs) |
+| `floating_network_name` | Public network name for floating IPs                     | string         | n/a     | yes (if using floating IPs) |
 | `additional_nics`     | List of additional NICs to attach per VM                   | list(object({ network_name = string, subnet_name = string, static_ip = string })) | [] | no |
 | `additional_volumes`  | List of volumes (with `size` and `type`) to attach per VM  | list(object({ size = number, type = string })) | [] | no |
+| `user_data_file`      | Path to cloud-init script file                             | string         | null    | no       |
 
 ## Outputs
 
@@ -69,7 +71,8 @@ This Terraform module provisions one or more virtual machines into an OpenStack 
 
 ```hcl
 module "openstack_vm" {
-  source              = "./openstack_flex_compute_instance"
+
+  source              = "github.com/global-openstack/openstack_compute_instance_v2.git?ref=v1.0.1"
   vm_count            = 2
   use_name_formatting = true
   instance_base_name  = "tf-wp-web"
@@ -81,11 +84,13 @@ module "openstack_vm" {
   volume_size         = 20
   volume_type         = "Standard"
 
+  user_data_file      = "cloud-init/user_data_mount_volumes.yaml"
+
+  public_network_name = "PUBLICNET"
+
   network_name        = "DMZ-Network"
   subnet_name         = "dmz-subnet"
   static_ips          = ["192.168.0.10", "192.168.0.11"]
-
-  floating_network_name = "PUBLICNET"
 
   additional_nics = [
     {
