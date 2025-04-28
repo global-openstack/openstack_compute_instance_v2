@@ -12,7 +12,12 @@ locals {
 
   additional_nic_map = {
     for index, nic in var.additional_nics :
-    format("%s-nic-%02d", var.instance_base_name, index + 1) => {
+    format(
+      "%s-%s-Secondary-Nic-%s",
+      var.instance_base_name,
+      format("%02d", index % length(local.instance_keys) + 1),
+      nic.network_name
+    ) => {
       instance_key  = local.instance_keys[index % length(local.instance_keys)]
       instance_id   = var.instance_ids[local.instance_keys[index % length(local.instance_keys)]]
       network_name  = nic.network_name
