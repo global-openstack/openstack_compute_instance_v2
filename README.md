@@ -120,4 +120,4 @@ module "openstack_vm" {
 
 ## Authors
 
-This module is maintained by the [Global VMware Cloud Automation Services Team](https://github.com/global-vmware) and extended for OpenStack by Rackspace Technology.
+This module is maintained by the [Global OpenStack Cloud Automation Services Team](https://github.com/global-openstack).
