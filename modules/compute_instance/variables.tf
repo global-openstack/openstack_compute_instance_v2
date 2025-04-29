@@ -106,11 +106,12 @@ variable "additional_nics" {
 }
 
 variable "additional_volumes" {
+  description = "List of additional volumes to attach per VM"
   type = list(object({
-    vm_name = string
-    size    = number
-    type    = string
+    size = number
+    type = string
   }))
+  default = []
 }
 
 variable "public_network_name" {

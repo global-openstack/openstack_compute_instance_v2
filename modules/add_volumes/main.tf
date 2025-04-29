@@ -8,45 +8,43 @@ terraform {
 }
 
 locals {
-  ordered_volume_map = merge([
-    for vm_name in var.instance_names : {
-      for idx, vol in var.additional_volumes :
-      "${vm_name}-vol-${format("%02d", idx + 1)}" => {
-        name    = format("%s-vol-%02d", vm_name, idx + 1)
+  volumes_by_vm = {
+    for vol in var.additional_volumes : vol.vm_name => vol...
+  }
+
+  ordered_volumes = flatten([
+    for vm_name, vols in local.volumes_by_vm : [
+      for idx, vol in vols : {
+        key     = "${vm_name}-data-${format("%02d", idx + 1)}"
+        name    = "${vm_name}-data-${format("%02d", idx + 1)}"
         vm_name = vm_name
         size    = vol.size
         type    = vol.type
-        order   = idx + 1
+        index   = idx
       }
-    }
-  ]...)
+    ]
+  ])
 }
 
-resource "openstack_blockstorage_volume_v3" "data_disks" {
-  for_each    = local.ordered_volume_map
-
-  name        = each.value.name
-  size        = each.value.size
-  volume_type = each.value.type
+resource "openstack_blockstorage_volume_v3" "volumes" {
+  count       = length(local.ordered_volumes)
+  name        = local.ordered_volumes[count.index].name
+  size        = local.ordered_volumes[count.index].size
+  volume_type = local.ordered_volumes[count.index].type
 
   metadata = {
-    order = tostring(each.value.order)
-    label = format("data%02d", each.value.order)
+    order = tostring(local.ordered_volumes[count.index].index + 1)
+    label = local.ordered_volumes[count.index].name
   }
 }
 
 resource "openstack_compute_volume_attach_v2" "attachments" {
-  for_each    = local.ordered_volume_map
+  count       = length(local.ordered_volumes)
 
-  instance_id = var.instance_ids[each.value.vm_name]
-  volume_id   = openstack_blockstorage_volume_v3.data_disks[each.key].id
+  instance_id = var.instance_ids[local.ordered_volumes[count.index].vm_name]
+  volume_id   = openstack_blockstorage_volume_v3.volumes[count.index].id
 
   lifecycle {
     ignore_changes = [device]
-  }
-
-  timeouts {
-    create = "10m"
-    delete = "5m"
   }
 }

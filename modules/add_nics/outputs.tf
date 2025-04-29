@@ -9,13 +9,12 @@ output "additional_nics_ports" {
   }
 }
 
-output "additional_nics_attached" {
-  description = "Extra NIC interface attachments"
-  value = {
-    for k, v in openstack_compute_interface_attach_v2.additional_nics :
-    k => {
-      instance_id = v.instance_id
-      port_id     = v.port_id
-    }
-  }
-}
+#output "additional_nics_attached" {
+#  value = {
+#    for k, v in openstack_compute_interface_attach_v2.additional_nics :
+#    k => {
+#      instance_id = v.instance_id
+#      port_id     = v.port_id
+#    }
+#  }
+#}
