@@ -124,10 +124,8 @@ module "openstack_vm" {
   ]
 
   additional_volumes = [
-    { vm_name = "tf-test-web-01", size = 10, type = "Performance" },
-    { vm_name = "tf-test-web-01", size = 20, type = "Standard" },
-    { vm_name = "tf-test-web-02", size = 10, type = "Performance" },
-    { vm_name = "tf-test-web-02", size = 20, type = "Standard" }
+    { size = 10, type = "Performance" },
+    { size = 20, type = "Standard" }
   ]
 }
 ```
