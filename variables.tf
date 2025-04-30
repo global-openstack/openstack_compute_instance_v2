@@ -106,10 +106,10 @@ variable "additional_nics" {
 }
 
 variable "additional_volumes" {
+  description = "List of volumes (size/type) to attach to all VMs"
   type = list(object({
-    vm_name = string
-    size    = number
-    type    = string
+    size = number
+    type = string
   }))
 }
 
