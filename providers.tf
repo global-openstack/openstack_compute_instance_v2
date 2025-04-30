@@ -1,6 +1,3 @@
-provider "openstack" {
-}  
-
 terraform {
   required_providers {
     openstack = {
