@@ -9,4 +9,5 @@ variable "additional_volumes" {
     size = number
     type = string
   }))
+  default = []
 }

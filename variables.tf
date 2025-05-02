@@ -111,6 +111,7 @@ variable "additional_volumes" {
     size = number
     type = string
   }))
+  default = []
 }
 
 variable "public_network_name" {
