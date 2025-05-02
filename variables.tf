@@ -117,4 +117,5 @@ variable "additional_volumes" {
 variable "public_network_name" {
   description = "Name of the external network used to allocate floating IPs"
   type        = string
+  default     = ""
 }

@@ -1,9 +1,17 @@
 variable "floating_network_name" {
-  description = "Name of the external network used for floating IPs"
+  description = "The name of the external/public network to assign floating IPs from"
   type        = string
+  default     = ""
+}
+
+variable "floating_ip_map" {
+  description = "Map of VM names to associate floating IPs with"
+  type        = map(any)
+  default     = {}
 }
 
 variable "ports_to_associate" {
-  description = "Map of VM name to port ID to associate with floating IP"
+  description = "Map of VM names to port IDs for floating IP association"
   type        = map(string)
+  default     = {}
 }
