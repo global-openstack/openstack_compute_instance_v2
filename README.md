@@ -79,6 +79,30 @@ This module now uses a modular layout:
 
 ---
 
+### ⚙️ Floating IP Support
+
+This module supports **optional assignment of floating IPs** to the primary NIC of each VM.
+
+- To enable floating IPs, set the `public_network_name` variable to the name of your external network:
+
+  ```hcl
+  public_network_name = "PUBLICNET"
+  ```
+
+- Floating IPs will be created and automatically associated with the primary NIC of each VM.
+
+- To disable floating IPs, simply omit the variable or leave it blank:
+
+  ```hcl
+  # public_network_name = "PUBLICNET"
+  ```
+
+When `public_network_name` is unset:
+
+- No floating IPs are created.
+- No association is attempted.
+- The internal (fixed) IP is used for VM access.
+
 ## 🚀 Example Usage
 
 ```hcl
