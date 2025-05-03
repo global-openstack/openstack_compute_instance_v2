@@ -25,3 +25,11 @@ output "vm_ports" {
     for name, port in openstack_networking_port_v2.vm_ports : name => port.id
   }
 }
+
+output "internal_ips" {
+  description = "Map of VM names to their internal IP addresses"
+  value = {
+    for vm_name, instance in openstack_compute_instance_v2.vm :
+    vm_name => instance.network[0].fixed_ip_v4
+  }
+}

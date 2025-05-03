@@ -18,7 +18,9 @@ output "additional_nics_ports" {
   value       = module.add_nics.additional_nics_ports
 }
 
-#output "additional_nics_attached" {
-#  description = "Details about the extra NIC attachments (instance ID and port ID)"
-#  value       = module.add_nics.additional_nics_attached
-#}
+output "internal_ips" {
+  description = "Map of VM names to their internal IP addresses"
+  value       = module.compute.internal_ips
+}
+
+
