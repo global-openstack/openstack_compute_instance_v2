@@ -1,4 +1,4 @@
-variable "floating_network_name" {
+variable "public_network_name" {
   description = "The name of the external/public network to assign floating IPs from"
   type        = string
   default     = ""

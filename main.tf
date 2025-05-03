@@ -76,11 +76,9 @@ module "add_nics" {
 module "networking" {
   source = "./modules/networking"
 
-  floating_network_name = var.public_network_name
-
-  ports_to_associate = {
-    for name, port in module.compute.vm_ports : name => port
-  }
+  public_network_name  = var.public_network_name
+  floating_ip_map      = local.floating_port_map
+  ports_to_associate   = local.floating_port_map
 
   depends_on = [module.compute]
 }
