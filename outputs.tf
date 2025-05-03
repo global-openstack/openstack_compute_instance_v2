@@ -18,9 +18,9 @@ output "additional_nics_ports" {
   value       = module.add_nics.additional_nics_ports
 }
 
-output "internal_ips" {
+output "primary_ips" {
   description = "Map of VM names to their internal IP addresses"
-  value       = module.compute.internal_ips
+  value       = module.compute.primary_ips
 }
 
 

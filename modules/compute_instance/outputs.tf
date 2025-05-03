@@ -26,7 +26,7 @@ output "vm_ports" {
   }
 }
 
-output "internal_ips" {
+output "primary_ips" {
   description = "Map of VM names to their internal IP addresses"
   value = {
     for vm_name, instance in openstack_compute_instance_v2.vm :
