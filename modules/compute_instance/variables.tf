@@ -65,6 +65,12 @@ variable "user_data_file" {
   default     = ""
 }
 
+variable "user_data_template_file" {
+  description = "Path to a cloud-init template file (optional). If set, will render using templatefile()"
+  type        = string
+  default     = ""
+}
+
 variable "source_type" {
   type        = string
   default     = "image"

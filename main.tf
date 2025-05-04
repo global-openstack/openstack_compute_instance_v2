@@ -31,6 +31,7 @@ module "compute" {
   availability_zone     = var.availability_zone
   image_name            = var.image_name
   user_data_file        = var.user_data_file
+  user_data_template_file = var.user_data_template_file
 
   network_name          = var.network_name
   subnet_name           = var.subnet_name
@@ -55,6 +56,8 @@ module "add_volumes" {
 
   instance_ids       = module.compute.vm_ids
   additional_volumes = var.additional_volumes
+
+  depends_on = [ module.compute ]
 }
 
 # ----------------------------
@@ -67,7 +70,7 @@ module "add_nics" {
   instance_base_name = var.instance_base_name
   additional_nics    = var.additional_nics
 
-  depends_on = [module.compute]
+  depends_on = [module.add_volumes]
 }
 
 # ----------------------------
@@ -80,5 +83,5 @@ module "networking" {
   floating_ip_map      = local.floating_port_map
   ports_to_associate   = local.floating_port_map
 
-  depends_on = [module.compute]
+  depends_on = [module.add_nics]
 }

@@ -22,7 +22,7 @@ data "openstack_networking_subnet_v2" "subnet" {
   network_id = data.openstack_networking_network_v2.network.id
 }
 
-# Local name logic
+# Local instance name logic
 locals {
   vm_names = var.use_name_formatting ? [
     for i in range(var.vm_count) : format("%s-%02d", var.instance_base_name, i + 1)
@@ -30,6 +30,28 @@ locals {
 
   vm_map = {
     for name in local.vm_names : name => name
+  }
+}
+
+locals {
+  volume_count = length(var.additional_volumes)
+
+  rendered_user_data = var.user_data_template_file != "" ? templatefile("${path.root}/${var.user_data_template_file}", {
+    volume_count = local.volume_count
+  }) : (
+    var.user_data_file != "" ? file("${path.root}/${var.user_data_file}") : null
+  )
+}
+
+locals {
+  both_user_data_defined = var.user_data_file != "" && var.user_data_template_file != ""
+}
+
+resource "null_resource" "validate_user_data_source" {
+  count = local.both_user_data_defined ? 1 : 0
+
+  provisioner "local-exec" {
+    command = "echo 'ERROR: You must set only one of user_data_file or user_data_template_file, not both.' && exit 1"
   }
 }
 
@@ -56,7 +78,7 @@ resource "openstack_compute_instance_v2" "vm" {
   key_pair          = var.key_pair
   availability_zone = var.availability_zone
   
-  user_data = var.user_data_file != "" ? file("${path.root}/${var.user_data_file}") : null
+  user_data = local.rendered_user_data
 
   # Attach primary NIC via pre-created port
   network {
