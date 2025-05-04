@@ -12,6 +12,6 @@ variable "additional_nics" {
   type = list(object({
     network_name = string
     subnet_name  = string
-    static_ip    = string
+    static_ip    = optional(string)
   }))
 }
