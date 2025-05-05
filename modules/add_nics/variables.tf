@@ -22,9 +22,10 @@ variable "instance_names" {
 variable "additional_nics" {
   description = "NIC templates to apply to each VM"
   type = list(object({
-    network_name = string
-    subnet_name  = string
+    network_name  = string
+    subnet_name   = string
   }))
+  default         = []
 }
 
 variable "add_nics_static_ips" {
