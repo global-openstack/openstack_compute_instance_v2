@@ -27,7 +27,7 @@ Do **not** define both `user_data_file` and `user_data_template_file` in the sam
 
 This file is a raw cloud-init YAML script. It's passed directly to the instance during provisioning with no interpolation or templating. Use it when your configuration is fully static.
 
-### 🔧 What it does
+### 🔧 What it does - Static
 
 - Creates a user named `rack-user`
 - Adds the user to the `sudo` group with NOPASSWD privileges
@@ -35,7 +35,7 @@ This file is a raw cloud-init YAML script. It's passed directly to the instance 
 - Adds a specific SSH key to the user’s `authorized_keys`
 - Manually ensures correct ownership and permissions on `.ssh` and key files
 
-### 🧩 Terraform Example
+### 🧩 Terraform Example - Option 1
 
 ```hcl
 user_data_file = "cloud-init/add_user.yaml"
@@ -47,13 +47,13 @@ user_data_file = "cloud-init/add_user.yaml"
 
 This file uses Terraform’s `templatefile()` function to inject values dynamically. It is rendered before being passed to the VM. Use this when you need to handle dynamic data like disk counts or names.
 
-### 🔧 What it does
+### 🔧 What it does - Template
 
 - Waits for a specific number of attached data volumes to be ready
 - Filters unformatted disks, formats them with `ext4`, and labels them sequentially (`data01`, `data02`, etc.)
 - Mounts each volume to `/mnt/<label>` and persists the mount via `/etc/fstab`
 
-### 🧩 Terraform Example
+### 🧩 Terraform Example - Option 2
 
 ```hcl
 user_data_template_file = "cloud-init/user_data_template_file.yaml"
