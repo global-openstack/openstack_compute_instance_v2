@@ -102,13 +102,17 @@ variable "delete_on_termination" {
 }
 
 variable "additional_nics" {
-  description = "List of additional NIC definitions (one per VM, ordered)"
+  description = "NIC templates to apply to each VM"
   type = list(object({
     network_name = string
     subnet_name  = string
-    static_ip    = optional(string)
   }))
-  default = []
+}
+
+variable "add_nics_static_ips" {
+  description = "List of static IPs per NIC per VM (flattened)"
+  type        = list(string)
+  default     = []
 }
 
 variable "additional_volumes" {

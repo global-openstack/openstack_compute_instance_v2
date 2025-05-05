@@ -1,20 +1,19 @@
 output "additional_nics_ports" {
+  description = "Map of VM names to their additional NICs info"
   value = {
-    for k, p in openstack_networking_port_v2.additional_nic_ports :
-    k => {
-      ip         = p.all_fixed_ips[0]
-      mac        = p.mac_address
-      network_id = p.network_id
-    }
+    for vm_key in distinct([for nic in local.expanded_nics : nic.vm_key]) :
+    vm_key => [
+      for nic in local.expanded_nics : {
+        name       = nic.nic_name
+        ip         = openstack_networking_port_v2.additional_nic_ports[nic.nic_name].all_fixed_ips[0]
+        mac        = openstack_networking_port_v2.additional_nic_ports[nic.nic_name].mac_address
+        network_id = openstack_networking_port_v2.additional_nic_ports[nic.nic_name].network_id
+      }
+      if nic.vm_key == vm_key
+    ]
   }
 }
 
-#output "additional_nics_attached" {
-#  value = {
-#    for k, v in openstack_compute_interface_attach_v2.additional_nics :
-#    k => {
-#      instance_id = v.instance_id
-#      port_id     = v.port_id
-#    }
-#  }
-#}
+output "debug_vm_keys" {
+  value = local.vm_keys
+}

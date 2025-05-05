@@ -8,22 +8,33 @@ terraform {
 }
 
 locals {
-  instance_keys = keys(var.instance_ids)
+  vm_keys = (
+    var.use_name_formatting ?
+    [for i in range(var.vm_count) : format("%s-%02d", var.instance_base_name, i + 1)] :
+    var.instance_names
+  )
+
+  expanded_nics = flatten([
+    for nic_index, nic_def in var.additional_nics : [
+      for vm_index, vm_key in local.vm_keys : {
+        vm_key       = vm_key
+        nic_index    = nic_index
+        nic_name     = "${vm_key}-Secondary-Nic-${nic_def.network_name}"
+        network_name = nic_def.network_name
+        subnet_name  = nic_def.subnet_name
+        static_ip = (
+          length(var.add_nics_static_ips) > (nic_index * length(local.vm_keys) + vm_index)
+          ? var.add_nics_static_ips[nic_index * length(local.vm_keys) + vm_index]
+          : null
+        )
+
+        instance_id  = var.instance_ids[vm_key]
+      }
+    ]
+  ])
 
   additional_nic_map = {
-    for index, nic in var.additional_nics :
-    format(
-      "%s-%s-Secondary-Nic-%s",
-      var.instance_base_name,
-      format("%02d", index % length(local.instance_keys) + 1),
-      nic.network_name
-    ) => {
-      instance_key  = local.instance_keys[index % length(local.instance_keys)]
-      instance_id   = var.instance_ids[local.instance_keys[index % length(local.instance_keys)]]
-      network_name  = nic.network_name
-      subnet_name   = nic.subnet_name
-      static_ip     = nic.static_ip
-    }
+    for nic in local.expanded_nics : nic.nic_name => nic
   }
 }
 

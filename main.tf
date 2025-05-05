@@ -38,7 +38,7 @@ module "compute" {
   public_network_name   = var.public_network_name
   static_ips            = var.static_ips
   additional_nics       = var.additional_nics
-
+  
   source_type           = var.source_type
   destination_type      = var.destination_type
   volume_size           = var.volume_size
@@ -66,9 +66,13 @@ module "add_volumes" {
 module "add_nics" {
   source = "./modules/add_nics"
 
-  instance_ids       = module.compute.vm_ids
-  instance_base_name = var.instance_base_name
-  additional_nics    = var.additional_nics
+  use_name_formatting = var.use_name_formatting
+  vm_count            = var.vm_count
+  instance_base_name  = var.instance_base_name
+  instance_names      = var.instance_names
+  instance_ids        = module.compute.vm_ids
+  additional_nics     = var.additional_nics
+  add_nics_static_ips = var.add_nics_static_ips
 
   depends_on = [module.add_volumes]
 }
