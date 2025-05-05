@@ -7,7 +7,7 @@ This directory provides two examples of how to use `cloud-init` with the `openst
 | File                          | Type                     | Description                                                  |
 |-------------------------------|--------------------------|--------------------------------------------------------------|
 | `add_user.yaml`               | `user_data_file`         | Static cloud-init YAML for creating a user and setting SSH   |
-| `user_data_template_file.yaml`| `user_data_template_file`| Templated cloud-init for formatting and mounting data volumes|
+| `user_data_mount_volumes.tpl` | `user_data_template_file`| Templated cloud-init for formatting and mounting data volumes|
 
 ---
 
@@ -43,7 +43,7 @@ user_data_file = "cloud-init/add_user.yaml"
 
 ---
 
-## 🔸 Option 2: Template `user_data_template_file` – `user_data_template_file.yaml`
+## 🔸 Option 2: Template `user_data_template_file` – `user_data_mount_volumes.tpl`
 
 This file uses Terraform’s `templatefile()` function to inject values dynamically. It is rendered before being passed to the VM. Use this when you need to handle dynamic data like disk counts or names.
 
@@ -56,7 +56,7 @@ This file uses Terraform’s `templatefile()` function to inject values dynamica
 ### 🧩 Terraform Example - Option 2
 
 ```hcl
-user_data_template_file = "cloud-init/user_data_template_file.yaml"
+user_data_template_file = "cloud-init/user_data_mount_volumes.tpl"
 ```
 
 ---
