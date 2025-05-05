@@ -107,6 +107,8 @@ When `public_network_name` is unset:
 
 ## 📝 Cloud-Init Configuration
 
+Using cloud-init with this module is **optional**. If you want to configure your VM on first boot (e.g., set users, install packages, mount disks), you may provide one of the two options below — but **not both**.
+
 This module supports two mutually exclusive methods for passing cloud-init data into your OpenStack VMs. You **must choose only one** of the options below:
 
 ### Option 1: Use a Static `user_data_file`
@@ -129,6 +131,8 @@ user_data_template_file = "cloud-init/user_data_mount_volumes.tpl"
 
 This is ideal if you want to dynamically inject Terraform variables like `volume_count`, VM name, etc., into the cloud-init content.
 
+> ⚠️ **Important:** Cloud-init is not required. If you don’t want to use it, simply leave both `user_data_file` and `user_data_template_file` unset.
+>
 > ⚠️ **Note:** Do not set both `user_data_file` and `user_data_template_file`. Only one should be defined per deployment to avoid conflicts.
 
 ---

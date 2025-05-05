@@ -1,7 +1,7 @@
 #cloud-config
 users:
-  - name: rackadmin
-    gecos: Rack Admin
+  - name: rack-user
+    gecos: Rackspace User
     shell: /bin/bash
     sudo: ALL=(ALL) NOPASSWD:ALL
     groups: sudo
