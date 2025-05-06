@@ -6,10 +6,10 @@ This Terraform module provisions one or more virtual machines into an OpenStack 
 
 This module now uses a modular layout:
 
-- `modules/compute_instance` – Primary VM provisioning
+- `modules/compute_instance` – Primary VM provisioning module
 - `modules/add_volumes` – Creates and attaches additional volumes to VMs
-- `modules/add_nics` – Creates and attaches additional NICs
-- `modules/networking` – Creates and attaches floating IPs
+- `modules/add_nics` – Creates and attaches additional NICs to VMs
+- `modules/networking` – Creates and attaches floating IPs to VMs
 
 ---
 
