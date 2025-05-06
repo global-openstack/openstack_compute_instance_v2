@@ -150,26 +150,12 @@ module "openstack_vm" {
   image_name          = "Ubuntu 24.04"
   flavor_name         = "gp.5.4.8"
   key_pair            = "my_openstack_kp"
-  availability_zone   = "az1"
 
-  source_type         = "image"
-  destination_type    = "volume"
   volume_size         = 20
   volume_type         = "Standard"
 
-  # cloud-init source (Choose One Option below):
-  # Option 1: Use a static cloud-init file
-  #user_data_file = "cloud-init/add-user.yaml"
-
-  # Option 2: Use a template with volume_count injected
-  user_data_template_file = "cloud-init/user_data_mount_volumes.tpl"
-
   network_name        = "DMZ-Network"
   subnet_name         = "dmz-subnet"
-  static_ips = [
-    "192.168.0.10",
-    "192.168.0.11"
-  ]
 
   public_network_name = "PUBLICNET"
 
@@ -178,10 +164,6 @@ module "openstack_vm" {
       network_name = "Inside-Network"
       subnet_name  = "inside-subnet"
     }
-  ]
-
-  add_nics_static_ips = [
-    "172.16.0.10", "172.16.0.11"
   ]
 
   additional_volumes = [
