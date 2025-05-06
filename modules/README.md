@@ -86,4 +86,4 @@ modules/
 
 ## 👷 Module Reusability
 
-Each module can be reused in other projects as long as input/output contracts are respected. Refer to each submodule's variables.tf and outputs.tf files for integration details.
+Each module can be reused in other projects, provided the expected input variables and output values are used correctly. Refer to each submodule’s `variables.tf` and `outputs.tf` files for integration details.
