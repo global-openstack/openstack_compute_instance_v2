@@ -43,8 +43,8 @@ module "compute" {
   destination_type      = var.destination_type
   volume_size           = var.volume_size
   volume_type           = var.volume_type
-  boot_index            = 0
-  delete_on_termination = true
+  boot_index            = var.boot_index
+  delete_on_termination = var.delete_on_termination
 }
 
 # ----------------------------

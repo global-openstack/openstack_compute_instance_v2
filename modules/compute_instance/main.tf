@@ -90,8 +90,8 @@ resource "openstack_compute_instance_v2" "vm" {
     uuid                  = data.openstack_images_image_v2.image.id
     source_type           = var.source_type
     destination_type      = var.destination_type
-    volume_size           = var.volume_size
-    volume_type           = var.volume_type
+    volume_size           = var.destination_type == "volume" ? var.volume_size : 0
+    volume_type           = var.destination_type == "volume" ? var.volume_type : null
     boot_index            = var.boot_index
     delete_on_termination = var.delete_on_termination
   }

@@ -51,10 +51,10 @@ This module now uses a modular layout:
 | `flavor_name` | OpenStack flavor | `string` | n/a | ✅ |
 | `key_pair` | OpenStack keypair name | `string` | n/a | ✅ |
 | `availability_zone` | AZ to place the VM in | `string` | `"az1"` | ❌ |
-| `volume_size` | Size of root disk (GB) | `number` | `20` | ❌ |
-| `volume_type` | Volume type of root disk | `string` | `"Standard"` | ❌ |
+| `volume_size` | Size of root disk (GB) | `number` | `0` | ❌ |
+| `volume_type` | Volume type of root disk | `string` | `""` | ❌ |
 | `source_type` | Source type for boot (e.g., `"image"`) | `string` | `"image"` | ✅ |
-| `destination_type` | Destination type for root (e.g., `"volume"`) | `string` | `"volume"` | ✅ |
+| `destination_type` | Destination type for root (e.g., `"volume"` or `"local"`) | `string` | `"local"` | ✅ |
 | `boot_index` | Boot device index | `number` | `0` | ❌ |
 | `delete_on_termination` | Whether root volume is deleted with VM | `bool` | `true` | ❌ |
 | `user_data_file` | Path to static cloud-init file | `string` | `""` | ❌ |
@@ -139,18 +139,21 @@ This is ideal if you want to dynamically inject Terraform variables like `volume
 
 ## 🚀 Example Usage
 
+### Scenario 1: Boot from Volume - Includes: Attaching Additional Volumes and Associating Floating IPs to the VMs
+
 ```hcl
-module "openstack_vm" {
-  source              = "github.com/global-openstack/openstack_compute_instance_v2.git?ref=v1.2.0"
+module "openstack_vm_volume" {
+  source              = "github.com/global-openstack/openstack_compute_instance_v2.git?ref=v1.2.1"
 
   vm_count            = 2
   use_name_formatting = true
-  instance_base_name  = "prod-web"
+  instance_base_name  = "prod-app"
 
   image_name          = "Ubuntu 24.04"
   flavor_name         = "gp.5.4.8"
   key_pair            = "my_openstack_kp"
 
+  destination_type    = "volume"
   volume_size         = 20
   volume_type         = "Standard"
 
@@ -159,17 +162,33 @@ module "openstack_vm" {
 
   public_network_name = "PUBLICNET"
 
-  additional_nics = [
-    {
-      network_name = "Inside-Network"
-      subnet_name  = "inside-subnet"
-    }
-  ]
-
   additional_volumes = [
     { size = 10, type = "Performance" },
     { size = 20, type = "Standard" }
   ]
+}
+```
+
+### Scenario 2: Boot from Local (Ephemeral Storage) - Includes: Associating Floating IPs to the VMs
+
+```hcl
+module "openstack_vm_local" {
+  source              = "github.com/global-openstack/openstack_compute_instance_v2.git?ref=v1.2.1"
+
+  vm_count            = 2
+  use_name_formatting = true
+  instance_base_name  = "dev-app"
+
+  image_name          = "Ubuntu 24.04"
+  flavor_name         = "gp.5.4.8"
+  key_pair            = "my_openstack_kp"
+
+  destination_type    = "local"
+
+  network_name        = "DMZ-Network"
+  subnet_name         = "dmz-subnet"
+
+  public_network_name = "PUBLICNET"
 }
 ```
 

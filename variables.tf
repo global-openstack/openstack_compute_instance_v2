@@ -78,17 +78,17 @@ variable "source_type" {
 
 variable "destination_type" {
   type        = string
-  default     = "volume"
+  default     = "local"
 }
 
 variable "volume_size" {
   type        = number
-  default     = 20
+  default     = 0
 }
 
 variable "volume_type" {
   type        = string
-  default     = "Standard"
+  default     = ""
 }
 
 variable "boot_index" {
