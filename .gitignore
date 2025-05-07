@@ -9,7 +9,9 @@ secrets.tfvars
 secrets.auto.tfvars
 terraform.tfvars
 terraform.auto.tfvars
+terraform*.auto.tfvars
 terraform.auto.tfvars.bak
+terraform*.auto.tfvars.bak
 
 static_ip_ranges.json
 
