@@ -1,4 +1,4 @@
-# ![OpenStack Compute Instance](./images/Nova-Instance-Logo-22-23.jpeg) OpenStack Compute Instance Terraform Module
+# ![OpenStack Compute Instance](./images/Nova-Instance-Icon-29-30.png) OpenStack Compute Instance Terraform Module
 
 This Terraform module provisions one or more virtual machines into an OpenStack environment using the `openstack_compute_instance_v2` resource. It supports root disk provisioning, optional floating IPs, additional NICs, and additional volumes with ordered disk attachment.
 
