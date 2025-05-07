@@ -104,10 +104,11 @@ variable "delete_on_termination" {
 variable "additional_nics" {
   description = "NIC templates to apply to each VM"
   type = list(object({
-    network_name  = string
-    subnet_name   = string
+    network_name    = string
+    subnet_name     = string
+    security_groups = optional(list(string), [])
   }))
-  default         = []
+  default = []
 }
 
 variable "add_nics_static_ips" {
@@ -129,4 +130,10 @@ variable "public_network_name" {
   description = "Name of the external network used to allocate floating IPs"
   type        = string
   default     = ""
+}
+
+variable "security_groups" {
+  description = "List of security group names to apply to the primary NIC of each VM"
+  type        = list(string)
+  default     = []
 }

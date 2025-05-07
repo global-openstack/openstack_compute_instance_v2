@@ -38,6 +38,7 @@ module "compute" {
   public_network_name   = var.public_network_name
   static_ips            = var.static_ips
   additional_nics       = var.additional_nics
+  security_groups       = var.security_groups
   
   source_type           = var.source_type
   destination_type      = var.destination_type

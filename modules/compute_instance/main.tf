@@ -22,6 +22,12 @@ data "openstack_networking_subnet_v2" "subnet" {
   network_id = data.openstack_networking_network_v2.network.id
 }
 
+# Security Groups
+data "openstack_networking_secgroup_v2" "secgroup" {
+  for_each = toset(var.security_groups)
+  name     = each.key
+}
+
 # Local instance name logic
 locals {
   vm_names = var.use_name_formatting ? [
@@ -67,6 +73,10 @@ resource "openstack_networking_port_v2" "vm_ports" {
   }
 
   tags = ["access"]
+
+  security_group_ids = [
+    for sg in var.security_groups : data.openstack_networking_secgroup_v2.secgroup[sg].id
+  ]
 }
 
 # Create VMs using port as primary NIC

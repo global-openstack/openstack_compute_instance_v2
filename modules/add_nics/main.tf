@@ -17,18 +17,18 @@ locals {
   expanded_nics = flatten([
     for nic_index, nic_def in var.additional_nics : [
       for vm_index, vm_key in local.vm_keys : {
-        vm_key       = vm_key
-        nic_index    = nic_index
-        nic_name     = "${vm_key}-Secondary-Nic-${nic_def.network_name}"
-        network_name = nic_def.network_name
-        subnet_name  = nic_def.subnet_name
-        static_ip = (
+        vm_key           = vm_key
+        nic_index        = nic_index
+        nic_name         = "${vm_key}-Secondary-Nic-${nic_def.network_name}"
+        network_name     = nic_def.network_name
+        subnet_name      = nic_def.subnet_name
+        static_ip        = (
           length(var.add_nics_static_ips) > (nic_index * length(local.vm_keys) + vm_index)
           ? var.add_nics_static_ips[nic_index * length(local.vm_keys) + vm_index]
           : null
         )
-
-        instance_id  = var.instance_ids[vm_key]
+        security_groups  = try(nic_def.security_groups, [])
+        instance_id      = var.instance_ids[vm_key]
       }
     ]
   ])
@@ -53,6 +53,11 @@ data "openstack_networking_subnet_v2" "nic_subnet" {
   network_id = data.openstack_networking_network_v2.nic_net[each.key].id
 }
 
+data "openstack_networking_secgroup_v2" "nic_secgroup" {
+  for_each = toset(flatten([for nic in local.expanded_nics : nic.security_groups]))
+  name     = each.value
+}
+
 resource "openstack_networking_port_v2" "additional_nic_ports" {
   for_each = local.additional_nic_map
 
@@ -63,6 +68,10 @@ resource "openstack_networking_port_v2" "additional_nic_ports" {
     subnet_id  = data.openstack_networking_subnet_v2.nic_subnet[each.key].id
     ip_address = each.value.static_ip
   }
+
+  security_group_ids = [
+    for sg in each.value.security_groups : data.openstack_networking_secgroup_v2.nic_secgroup[sg].id
+  ]
 }
 
 resource "openstack_compute_interface_attach_v2" "additional_nics" {

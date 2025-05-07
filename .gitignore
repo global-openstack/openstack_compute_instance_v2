@@ -9,6 +9,9 @@ secrets.tfvars
 secrets.auto.tfvars
 terraform.tfvars
 terraform.auto.tfvars
+terraform.auto.tfvars.bak
+
+static_ip_ranges.json
 
 # Crash log files
 crash.log

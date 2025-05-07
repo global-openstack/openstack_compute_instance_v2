@@ -50,6 +50,7 @@ This module now uses a modular layout:
 | `image_name` | Name of the OpenStack image | `string` | n/a | ✅ |
 | `flavor_name` | OpenStack flavor | `string` | n/a | ✅ |
 | `key_pair` | OpenStack keypair name | `string` | n/a | ✅ |
+| `security_groups` | List of security group names to apply to the primary NIC of each VM | `list(string)` | `[]` | ❌ |
 | `availability_zone` | AZ to place the VM in | `string` | `"az1"` | ❌ |
 | `volume_size` | Size of root disk (GB) | `number` | `0` | ❌ |
 | `volume_type` | Volume type of root disk | `string` | `""` | ❌ |
@@ -63,7 +64,7 @@ This module now uses a modular layout:
 | `subnet_name` | Name of primary subnet | `string` | n/a | ✅ |
 | `public_network_name` | Public/external network used for floating IPs | `string` | `""` | ❌ |
 | `static_ips` | List of fixed IPs for each VM's primary NIC | `list(string)` | `[]` | ❌ |
-| `additional_nics` | List of additional NIC definitions (applied to every VM) | `list(object({ network_name = string, subnet_name = string }))` | `[]` | ❌ |
+| `additional_nics` | List of additional NIC definitions (applied to every VM) | `list(object({ network_name = string, subnet_name = string, security_groups = optional(list(string), []) }))` | `[]` | ❌ |
 | `add_nics_static_ips` | Flattened list of static IPs per NIC per VM (NIC0-VM0, NIC0-VM1, NIC1-VM0, etc.) | `list(string)` | `[]` | ❌ |
 | `additional_volumes` | List of additional volumes per VM | `list(object({ size = number, type = string }))` | `[]` | ❌ |
 
@@ -152,6 +153,7 @@ module "openstack_vm_volume" {
   image_name          = "Ubuntu 24.04"
   flavor_name         = "gp.5.4.8"
   key_pair            = "my_openstack_kp"
+  security_groups     = ["default","dmz-sg"]
 
   destination_type    = "volume"
   volume_size         = 20
@@ -182,6 +184,7 @@ module "openstack_vm_local" {
   image_name          = "Ubuntu 24.04"
   flavor_name         = "gp.5.4.8"
   key_pair            = "my_openstack_kp"
+  security_groups     = ["default","dmz-sg"]
 
   destination_type    = "local"
 

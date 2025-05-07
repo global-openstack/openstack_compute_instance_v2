@@ -14,6 +14,7 @@ Provisions one or more OpenStack virtual machines using `openstack_compute_insta
 - Boot from volume using `source_type` and `destination_type`.
 - Injects cloud-init `user_data` or rendered templates.
 - Supports both name formatting and manual instance naming.
+- Primary NICs support a list of security groups applied during VM provisioning.
 
 ---
 
@@ -27,6 +28,7 @@ Attaches one or more **additional** NICs to each VM using `openstack_compute_int
 - Supports static IPs or DHCP for additional NICs.
 - Automatically attaches the correct subnet/network per NIC.
 - Ports are created with deterministic names based on VM and network.
+- Supports applying a list of security groups to each additional NIC, automatically mapped across all VMs.
 
 ---
 

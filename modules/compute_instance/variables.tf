@@ -124,3 +124,9 @@ variable "public_network_name" {
   description = "Name of the external network used to allocate floating IPs"
   type        = string
 }
+
+variable "security_groups" {
+  description = "List of security groups to attach to the primary NIC"
+  type        = list(string)
+  default     = []
+}
