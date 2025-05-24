@@ -1,6 +1,6 @@
 variable "use_name_formatting" {
   type        = bool
-  default     = false
+  default     = true
   description = "If true, generate names using base_name + index"
 }
 
