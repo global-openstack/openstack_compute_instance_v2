@@ -137,3 +137,15 @@ variable "security_groups" {
   type        = list(string)
   default     = []
 }
+
+variable "scheduler_hints_additional_properties" {
+  description = "Arbitrary key/value pairs of additional properties to pass to the scheduler."
+  type        = map(string)
+  default     = {}
+}
+
+variable "metadata" {
+  description = "Map of metadata key/value pairs to assign to all instances"
+  type        = map(string)
+  default     = {}
+}

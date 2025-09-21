@@ -106,5 +106,8 @@ resource "openstack_compute_instance_v2" "vm" {
     delete_on_termination = var.delete_on_termination
   }
 
+  metadata = var.metadata
+
   depends_on = [openstack_networking_port_v2.vm_ports]
+
 }

@@ -130,3 +130,10 @@ variable "security_groups" {
   type        = list(string)
   default     = []
 }
+
+variable "metadata" {
+  description = "Map of metadata key/value pairs to assign to the instance"
+  type        = map(string)
+  default     = {}
+}
+

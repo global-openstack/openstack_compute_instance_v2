@@ -46,6 +46,7 @@ module "compute" {
   volume_type           = var.volume_type
   boot_index            = var.boot_index
   delete_on_termination = var.delete_on_termination
+  metadata              = var.metadata
 }
 
 # ----------------------------
@@ -58,7 +59,7 @@ module "add_volumes" {
   instance_ids       = module.compute.vm_ids
   additional_volumes = var.additional_volumes
 
-  depends_on = [ module.compute ]
+  depends_on = [ module.networking ]
 }
 
 # ----------------------------
@@ -75,7 +76,7 @@ module "add_nics" {
   additional_nics     = var.additional_nics
   add_nics_static_ips = var.add_nics_static_ips
 
-  depends_on = [module.add_volumes]
+  depends_on = [module.compute]
 }
 
 # ----------------------------
