@@ -115,7 +115,7 @@ add_volumes (depends on networking)
 
 ## Development Notes
 
-- This module requires OpenStack provider version 3.0.0 exactly
+- This module requires OpenStack provider version ~> 3.3.2
 - Always source appropriate `openrc-*.sh` script before running Terraform
 - The `static_ip_ranges.json` file contains IP allocation data for reference
 - Module supports both Rackspace DFW3 and SJC3 datacenters
