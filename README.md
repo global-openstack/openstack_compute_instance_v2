@@ -144,7 +144,7 @@ This is ideal if you want to dynamically inject Terraform variables like `volume
 
 ```hcl
 module "openstack_vm_volume" {
-  source              = "github.com/global-openstack/openstack_compute_instance_v2.git?ref=v1.2.0"
+  source              = "github.com/global-openstack/openstack_compute_instance_v2.git?ref=v1.2.1"
 
   vm_count            = 2
   use_name_formatting = true
@@ -175,7 +175,7 @@ module "openstack_vm_volume" {
 
 ```hcl
 module "openstack_vm_local" {
-  source              = "github.com/global-openstack/openstack_compute_instance_v2.git?ref=v1.2.0"
+  source              = "github.com/global-openstack/openstack_compute_instance_v2.git?ref=v1.2.1"
 
   vm_count            = 2
   use_name_formatting = true
